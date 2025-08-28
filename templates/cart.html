@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block title %}{{ 'Shopping Cart' if lang == 'en' else 'Keranjang Belanja' }}{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="mb-4">
+                    <i class="fas fa-shopping-cart me-3"></i>
+                    {{ 'Shopping Cart' if lang == 'en' else 'Keranjang Belanja' }}
+                </h2>
+
+                {% if cart_items %}
+                <div class="row g-4">
+                    <div class="col-lg-8">
+                        {% for item in cart_items %}
+                        <div class="card mb-3">
+                            <div class="row g-0">
+                                <div class="col-md-3">
+                                    {% if item.product.image_url %}
+                                    <img src="{{ item.product.image_url }}" class="img-fluid rounded-start h-100" alt="{{ item.product.name_en if lang == 'en' else item.product.name_id }}">
+                                    {% else %}
+                                    <div class="bg-light rounded-start h-100 d-flex align-items-center justify-content-center">
+                                        <i class="fas fa-leaf text-success fa-3x"></i>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div>
+                                                <h5 class="card-title">{{ item.product.name_en if lang == 'en' else item.product.name_id }}</h5>
+                                                <p class="card-text text-muted">{{ item.product.description_en[:100] if lang == 'en' else item.product.description_id[:100] }}...</p>
+                                                <p class="card-text">
+                                                    <strong>{{ format_currency(get_product_price(item.product, currency), currency, lang) }}</strong> / {{ item.product.unit }}
+                                                </p>
+                                            </div>
+                                            <form method="POST" action="{{ url_for('remove_from_cart') }}" class="d-inline">
+                                                <input type="hidden" name="product_id" value="{{ item.product.id }}">
+                                                <button type="submit" class="btn btn-outline-danger btn-sm">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+
+                                        <div class="row mt-3">
+                                            <div class="col-sm-6">
+                                                <form method="POST" action="{{ url_for('update_cart') }}">
+                                                    <input type="hidden" name="product_id" value="{{ item.product.id }}">
+                                                    <div class="input-group">
+                                                        <button class="btn btn-outline-secondary" type="button" onclick="decreaseQuantity(this)">-</button>
+                                                        <input type="number" name="quantity" value="{{ item.quantity }}" min="0" class="form-control text-center" onchange="this.form.submit()">
+                                                        <button class="btn btn-outline-secondary" type="button" onclick="increaseQuantity(this)">+</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="col-sm-6 text-end">
+                                                <h5 class="text-success">{{ format_currency(item.total, currency, lang) }}</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">{{ 'Order Summary' if lang == 'en' else 'Ringkasan Pesanan' }}</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between mb-3">
+                                    <span>{{ 'Subtotal' if lang == 'en' else 'Subtotal' }}:</span>
+                                    <strong class="text-success">{{ format_currency(total, currency, lang) }}</strong>
+                                </div>
+                                <hr>
+                                <div class="d-flex justify-content-between mb-3">
+                                    <span class="h5">{{ 'Total' if lang == 'en' else 'Total' }}:</span>
+                                    <strong class="h5 text-success">{{ format_currency(total, currency, lang) }}</strong>
+                                </div>
+                                <div class="d-grid">
+                                    {% if session.is_logged_in %}
+                                    <a href="{{ url_for('checkout') }}" class="btn btn-success btn-lg">
+                                        <i class="fas fa-credit-card me-2"></i>
+                                        {{ 'Proceed to Checkout' if lang == 'en' else 'Lanjutkan ke Checkout' }}
+                                    </a>
+                                    {% else %}
+                                    <a href="{{ url_for('customer_login') }}" class="btn btn-success btn-lg">
+                                        <i class="fas fa-sign-in-alt me-2"></i>
+                                        {{ 'Login to Checkout' if lang == 'en' else 'Login untuk Checkout' }}
+                                    </a>
+                                    {% endif %}
+                                </div>
+                                <div class="text-center mt-3">
+                                    <a href="{{ url_for('products') }}" class="btn btn-outline-success">
+                                        <i class="fas fa-arrow-left me-2"></i>
+                                        {{ 'Continue Shopping' if lang == 'en' else 'Lanjutkan Belanja' }}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="text-center py-5">
+                    <div class="mb-4">
+                        <i class="fas fa-shopping-cart fa-4x text-muted"></i>
+                    </div>
+                    <h3 class="text-muted">{{ 'Your cart is empty' if lang == 'en' else 'Keranjang Anda kosong' }}</h3>
+                    <p class="text-muted mb-4">{{ 'Add some products to get started' if lang == 'en' else 'Tambahkan beberapa produk untuk memulai' }}</p>
+                    <a href="{{ url_for('products') }}" class="btn btn-success">
+                        <i class="fas fa-shopping-bag me-2"></i>
+                        {{ 'Start Shopping' if lang == 'en' else 'Mulai Belanja' }}
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function increaseQuantity(button) {
+    const input = button.parentNode.querySelector('input[name="quantity"]');
+    input.value = parseInt(input.value) + 1;
+    input.form.submit();
+}
+
+function decreaseQuantity(button) {
+    const input = button.parentNode.querySelector('input[name="quantity"]');
+    if (parseInt(input.value) > 0) {
+        input.value = parseInt(input.value) - 1;
+        input.form.submit();
+    }
+}
+</script>
+{% endblock %}

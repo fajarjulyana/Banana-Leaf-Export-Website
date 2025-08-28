@@ -1,0 +1,505 @@
+{% extends "base.html" %}
+
+{% block title %}Admin - Orders{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <!-- Page Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="display-5 fw-bold">
+                <i class="fas fa-shopping-cart me-3"></i>
+                Orders Management
+            </h1>
+        </div>
+    </div>
+
+    {% if not action %}
+    <!-- Filters -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <form method="GET" class="row g-3 align-items-end">
+                        <div class="col-md-3">
+                            <label for="status" class="form-label">Order Status</label>
+                            <select name="status" class="form-select">
+                                <option value="all" {{ 'selected' if selected_status == 'all' }}>All Orders</option>
+                                <option value="pending" {{ 'selected' if selected_status == 'pending' }}>Pending</option>
+                                <option value="confirmed" {{ 'selected' if selected_status == 'confirmed' }}>Confirmed</option>
+                                <option value="shipped" {{ 'selected' if selected_status == 'shipped' }}>Shipped</option>
+                                <option value="delivered" {{ 'selected' if selected_status == 'delivered' }}>Delivered</option>
+                                <option value="cancelled" {{ 'selected' if selected_status == 'cancelled' }}>Cancelled</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-filter me-2"></i>Filter
+                            </button>
+                            <a href="{{ url_for('admin.orders') }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-2"></i>Clear
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Orders Table -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-0">
+                    {% if orders.items %}
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Order #</th>
+                                    <th>Customer</th>
+                                    <th>Country</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in orders.items %}
+                                <tr>
+                                    <td>
+                                        <span class="fw-bold text-primary">{{ order.order_number }}</span>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <div class="fw-bold">{{ order.customer_name }}</div>
+                                            <small class="text-muted">{{ order.customer_email }}</small>
+                                            {% if order.customer_company %}
+                                            <br><small class="text-muted">{{ order.customer_company }}</small>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <i class="fas fa-globe me-1"></i>
+                                        {{ order.customer_country }}
+                                    </td>
+                                    <td>
+                                        <span class="fw-bold text-success">${{ "%.2f"|format(order.total_amount) }}</span>
+                                    </td>
+                                    <td>
+                                        {% if order.status == 'pending' %}
+                                            <span class="badge bg-warning">Pending</span>
+                                        {% elif order.status == 'confirmed' %}
+                                            <span class="badge bg-success">Confirmed</span>
+                                        {% elif order.status == 'shipped' %}
+                                            <span class="badge bg-info">Shipped</span>
+                                        {% elif order.status == 'delivered' %}
+                                            <span class="badge bg-primary">Delivered</span>
+                                        {% else %}
+                                            <span class="badge bg-danger">Cancelled</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ order.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-sm btn-outline-primary" 
+                                                onclick="viewOrder({{ order.id }})">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    {% if orders.pages > 1 %}
+                    <div class="card-footer bg-light">
+                        <nav aria-label="Orders pagination">
+                            <ul class="pagination justify-content-center mb-0">
+                                {% if orders.has_prev %}
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ url_for('admin.orders', page=orders.prev_num, status=selected_status) }}">Previous</a>
+                                </li>
+                                {% endif %}
+
+                                {% for page_num in orders.iter_pages() %}
+                                    {% if page_num %}
+                                        {% if page_num != orders.page %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="{{ url_for('admin.orders', page=page_num, status=selected_status) }}">{{ page_num }}</a>
+                                        </li>
+                                        {% else %}
+                                        <li class="page-item active">
+                                            <span class="page-link">{{ page_num }}</span>
+                                        </li>
+                                        {% endif %}
+                                    {% else %}
+                                    <li class="page-item disabled">
+                                        <span class="page-link">...</span>
+                                    </li>
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% if orders.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ url_for('admin.orders', page=orders.next_num, status=selected_status) }}">Next</a>
+                                </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                    {% endif %}
+                    {% else %}
+                    <div class="text-center py-5">
+                        <div class="mb-4">
+                            <i class="fas fa-shopping-cart fa-4x text-muted"></i>
+                        </div>
+                        <h3 class="text-muted">No orders found</h3>
+                        <p class="text-muted">
+                            {% if selected_status != 'all' %}
+                                No orders with status "{{ selected_status }}"
+                            {% else %}
+                                No orders have been placed yet
+                            {% endif %}
+                        </p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% elif action == 'detail' %}
+    <!-- Order Detail View -->
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Order Information -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Order Details - {{ order.order_number }}
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <strong>Customer Name:</strong><br>
+                            {{ order.customer_name }}
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Email:</strong><br>
+                            <a href="mailto:{{ order.customer_email }}">{{ order.customer_email }}</a>
+                        </div>
+                        {% if order.customer_phone %}
+                        <div class="col-md-6">
+                            <strong>Phone:</strong><br>
+                            {{ order.customer_phone }}
+                        </div>
+                        {% endif %}
+                        {% if order.customer_company %}
+                        <div class="col-md-6">
+                            <strong>Company:</strong><br>
+                            {{ order.customer_company }}
+                        </div>
+                        {% endif %}
+                        <div class="col-md-6">
+                            <strong>Country:</strong><br>
+                            <i class="fas fa-globe me-1"></i>{{ order.customer_country }}
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Order Date:</strong><br>
+                            {{ order.created_at.strftime('%Y-%m-%d %H:%M') }}
+                        </div>
+                        <div class="col-12">
+                            <strong>Shipping Address:</strong><br>
+                            <div class="bg-light p-3 rounded">
+                                {{ order.shipping_address|nl2br|safe }}
+                            </div>
+                        </div>
+                        {% if order.notes %}
+                        <div class="col-12">
+                            <strong>Customer Notes:</strong><br>
+                            <div class="bg-light p-3 rounded">
+                                {{ order.notes|nl2br|safe }}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Items -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">
+                        <i class="fas fa-list me-2"></i>
+                        Order Items
+                    </h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                    <th>Unit Price</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in order.items %}
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            {% if item.product.image_url %}
+                                            <img src="{{ item.product.image_url }}" alt="{{ item.product.name_en }}" 
+                                                 class="rounded me-3" style="width: 50px; height: 50px; object-fit: cover;">
+                                            {% else %}
+                                            <div class="bg-success bg-opacity-10 rounded me-3 d-flex align-items-center justify-content-center" 
+                                                 style="width: 50px; height: 50px;">
+                                                <i class="fas fa-leaf text-success"></i>
+                                            </div>
+                                            {% endif %}
+                                            <div>
+                                                <h6 class="mb-1">{{ item.product.name_en }}</h6>
+                                                <small class="text-muted">{{ item.product.category.name_en }}</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>{{ item.quantity }} {{ item.product.unit }}</td>
+                                    <td>${{ "%.2f"|format(item.unit_price) }}</td>
+                                    <td class="fw-bold text-success">${{ "%.2f"|format(item.total_price) }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot class="table-light">
+                                <tr>
+                                    <th colspan="3">Total Amount</th>
+                                    <th class="text-success">${{ "%.2f"|format(order.total_amount) }}</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order Management -->
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">
+                        <i class="fas fa-cog me-2"></i>
+                        Order Management
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST" action="{{ url_for('admin.update_order', order_id=order.id) }}">
+                        <div class="mb-3">
+                            <label for="status" class="form-label">Order Status</label>
+                            <select name="status" class="form-select" id="status">
+                                <option value="pending" {{ 'selected' if order.status == 'pending' }}>Pending</option>
+                                <option value="confirmed" {{ 'selected' if order.status == 'confirmed' }}>Confirmed</option>
+                                <option value="shipped" {{ 'selected' if order.status == 'shipped' }}>Shipped</option>
+                                <option value="delivered" {{ 'selected' if order.status == 'delivered' }}>Delivered</option>
+                                <option value="cancelled" {{ 'selected' if order.status == 'cancelled' }}>Cancelled</option>
+                            </select>
+                        </div>
+
+                        <!-- Shipping Information -->
+                        <div class="mb-3">
+                            <label class="form-label">Shipping Type</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="is_international" id="is_international" 
+                                       {{ 'checked' if order.is_international }}>
+                                <label class="form-check-label" for="is_international">
+                                    International Shipping
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="shipping_service" class="form-label">Shipping Service</label>
+                            <select class="form-select" name="shipping_service">
+                                <option value="">Select Service</option>
+                                <optgroup label="Domestic (Indonesia)">
+                                    <option value="JNE" {{ 'selected' if order.shipping_service == 'JNE' }}>JNE</option>
+                                    <option value="TIKI" {{ 'selected' if order.shipping_service == 'TIKI' }}>TIKI</option>
+                                    <option value="POS Indonesia" {{ 'selected' if order.shipping_service == 'POS Indonesia' }}>POS Indonesia</option>
+                                    <option value="SiCepat" {{ 'selected' if order.shipping_service == 'SiCepat' }}>SiCepat</option>
+                                    <option value="J&T Express" {{ 'selected' if order.shipping_service == 'J&T Express' }}>J&T Express</option>
+                                    <option value="AnterAja" {{ 'selected' if order.shipping_service == 'AnterAja' }}>AnterAja</option>
+                                </optgroup>
+                                <optgroup label="International">
+                                    <option value="DHL" {{ 'selected' if order.shipping_service == 'DHL' }}>DHL</option>
+                                    <option value="FedEx" {{ 'selected' if order.shipping_service == 'FedEx' }}>FedEx</option>
+                                    <option value="UPS" {{ 'selected' if order.shipping_service == 'UPS' }}>UPS</option>
+                                    <option value="TNT" {{ 'selected' if order.shipping_service == 'TNT' }}>TNT</option>
+                                    <option value="EMS" {{ 'selected' if order.shipping_service == 'EMS' }}>EMS</option>
+                                </optgroup>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="tracking_number" class="form-label">Tracking Number</label>
+                            <input type="text" class="form-control" name="tracking_number" 
+                                   value="{{ order.tracking_number or '' }}" placeholder="Enter tracking number">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="shipping_cost" class="form-label">Shipping Cost ($)</label>
+                            <input type="number" step="0.01" class="form-control" name="shipping_cost" 
+                                   value="{{ order.shipping_cost or '' }}" placeholder="0.00">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="shipping_status" class="form-label">Shipping Status</label>
+                            <select class="form-select" name="shipping_status">
+                                <option value="not_shipped" {{ 'selected' if order.shipping_status == 'not_shipped' }}>Not Shipped</option>
+                                <option value="picked_up" {{ 'selected' if order.shipping_status == 'picked_up' }}>Picked Up</option>
+                                <option value="in_transit" {{ 'selected' if order.shipping_status == 'in_transit' }}>In Transit</option>
+                                <option value="customs" {{ 'selected' if order.shipping_status == 'customs' }}>Customs Clearance</option>
+                                <option value="delivered" {{ 'selected' if order.shipping_status == 'delivered' }}>Delivered</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="admin_notes" class="form-label">Admin Notes</label>
+                            <textarea class="form-control" name="admin_notes" rows="4" 
+                                      placeholder="Internal notes about this order...">{{ order.admin_notes or '' }}</textarea>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>
+                                Update Order
+                            </button>
+                            <a href="mailto:{{ order.customer_email }}?subject=Order {{ order.order_number }}" 
+                               class="btn btn-outline-primary">
+                                <i class="fas fa-envelope me-2"></i>
+                                Email Customer
+                            </a>
+                            <a href="{{ url_for('admin.orders') }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>
+                                Back to Orders
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Shipping Information -->
+            {% if order.shipping_date or order.tracking_number %}
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">
+                        <i class="fas fa-shipping-fast me-2"></i>
+                        Shipping Information
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    {% if order.shipping_date %}
+                    <p><strong>Shipped Date:</strong><br>{{ order.shipping_date.strftime('%Y-%m-%d %H:%M') }}</p>
+                    {% endif %}
+
+                    {% if order.estimated_delivery %}
+                    <p><strong>Estimated Delivery:</strong><br>{{ order.estimated_delivery.strftime('%Y-%m-%d') }}</p>
+                    {% endif %}
+
+                    {% if order.tracking_number %}
+                    <p><strong>Tracking Number:</strong><br>
+                        <code class="bg-light p-2 rounded d-block">{{ order.tracking_number }}</code>
+                    </p>
+                    {% endif %}
+
+                    {% if order.shipping_service %}
+                    <p><strong>Service:</strong><br>
+                        <span class="badge bg-primary">{{ order.shipping_service }}</span>
+                        {% if order.is_international %}
+                        <span class="badge bg-info ms-1">International</span>
+                        {% else %}
+                        <span class="badge bg-success ms-1">Domestic</span>
+                        {% endif %}
+                    </p>
+                    {% endif %}
+
+                    {% if order.shipping_cost > 0 %}
+                    <p><strong>Shipping Cost:</strong><br>
+                        <span class="fw-bold text-success">${{ "%.2f"|format(order.shipping_cost) }}</span>
+                    </p>
+                    {% endif %}
+
+                    <p><strong>Shipping Status:</strong><br>
+                        <span class="badge 
+                            {% if order.shipping_status == 'delivered' %}bg-success
+                            {% elif order.shipping_status == 'in_transit' %}bg-info
+                            {% elif order.shipping_status == 'picked_up' %}bg-warning
+                            {% else %}bg-secondary{% endif %}">
+                            {{ order.shipping_status.replace('_', ' ').title() }}
+                        </span>
+                    </p>
+
+                    <!-- Quick tracking links -->
+                    {% if order.tracking_number %}
+                    <div class="d-grid gap-2 mt-3">
+                        {% if order.shipping_service == 'JNE' %}
+                        <a href="https://www.jne.co.id/id/tracking/trace" target="_blank" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-external-link-alt me-2"></i>Track on JNE
+                        </a>
+                        {% elif order.shipping_service == 'TIKI' %}
+                        <a href="https://www.tiki.id/tracking" target="_blank" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-external-link-alt me-2"></i>Track on TIKI
+                        </a>
+                        {% elif order.shipping_service == 'DHL' %}
+                        <a href="https://www.dhl.com/id-en/home/tracking.html" target="_blank" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-external-link-alt me-2"></i>Track on DHL
+                        </a>
+                        {% elif order.shipping_service == 'FedEx' %}
+                        <a href="https://www.fedex.com/en-us/tracking.html" target="_blank" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-external-link-alt me-2"></i>Track on FedEx
+                        </a>
+                        {% elif order.shipping_service == 'UPS' %}
+                        <a href="https://www.ups.com/track" target="_blank" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-external-link-alt me-2"></i>Track on UPS
+                        </a>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Order Detail Modal -->
+<div class="modal fade" id="orderDetailModal" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-eye me-2"></i>
+                    Order Details
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="orderDetailContent">
+                <!-- Content will be loaded dynamically -->
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function viewOrder(orderId) {
+    window.location.href = `/admin/orders/${orderId}`;
+}
+</script>
+{% endblock %}
