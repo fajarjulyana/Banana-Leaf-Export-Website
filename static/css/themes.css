@@ -1,0 +1,291 @@
+
+/* ===== TEMA SYSTEM CSS ===== */
+/* Berisi 3 tema utama berdasarkan gambar yang diberikan */
+
+/* ===== TEMA 1: NATURE LIFE (Hijau Natural dengan ilustrasi) ===== */
+[data-theme="nature_life"] {
+    --primary-color: #2d5a3d;
+    --secondary-color: #4a7c59;
+    --accent-color: #7fb069;
+    --background-primary: #ffffff;
+    --background-secondary: #f8fdf9;
+    --background-accent: #e8f5e8;
+    --text-primary: #2c3e2d;
+    --text-secondary: #5a6c5b;
+    --text-light: #ffffff;
+    --gradient-primary: linear-gradient(135deg, #2d5a3d 0%, #4a7c59 50%, #7fb069 100%);
+    --gradient-hero: linear-gradient(135deg, #2d5a3d 0%, #1e4029 100%);
+    --shadow-soft: 0 4px 15px rgba(45, 90, 61, 0.1);
+    --shadow-medium: 0 8px 25px rgba(45, 90, 61, 0.15);
+    --border-radius: 12px;
+    --border-radius-lg: 20px;
+}
+
+[data-theme="nature_life"] .hero-section {
+    background: var(--gradient-hero);
+    position: relative;
+    overflow: hidden;
+}
+
+[data-theme="nature_life"] .hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M50 150c0-20 16-36 36-36s36 16 36 36-16 36-36 36-36-16-36-36z'/%3E%3Cpath d='M200 100c0-15 12-27 27-27s27 12 27 27-12 27-27 27-27-12-27-27z'/%3E%3Cpath d='M300 180c0-25 20-45 45-45s45 20 45 45-20 45-45 45-45-20-45-45z'/%3E%3C/g%3E%3C/svg%3E") no-repeat center;
+    background-size: contain;
+}
+
+/* ===== TEMA 2: GALLERY BACKGROUND (Menggunakan galeri sebagai background navbar) ===== */
+[data-theme="theme2"] {
+    --primary-color: #2c5a3d;
+    --secondary-color: #4a7c59;
+    --accent-color: #7fb069;
+    --background-primary: #ffffff;
+    --background-secondary: #f8fdf9;
+    --background-accent: #e8f5e8;
+    --text-primary: #2c3e2d;
+    --text-secondary: #5a6c5b;
+    --text-light: #ffffff;
+    --gradient-primary: linear-gradient(135deg, #2c5a3d 0%, #4a7c59 50%, #7fb069 100%);
+    --gradient-hero: linear-gradient(135deg, #2c5a3d 0%, #1e4029 100%);
+    --shadow-soft: 0 4px 15px rgba(44, 90, 61, 0.1);
+    --shadow-medium: 0 8px 25px rgba(44, 90, 61, 0.15);
+    --border-radius: 12px;
+    --border-radius-lg: 20px;
+}
+
+/* Special navbar background untuk theme 2 */
+[data-theme="theme2"] .navbar {
+    background: linear-gradient(rgba(44, 90, 61, 0.9), rgba(44, 90, 61, 0.9)), 
+                var(--gallery-background, var(--gradient-primary)) !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    backdrop-filter: blur(5px);
+}
+
+[data-theme="theme2"] .navbar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(44, 90, 61, 0.85);
+    z-index: -1;
+}
+
+[data-theme="theme2"] .navbar * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Enhanced text visibility untuk navbar theme 2 */
+[data-theme="theme2"] .navbar-brand,
+[data-theme="theme2"] .nav-link,
+[data-theme="theme2"] .dropdown-toggle {
+    color: #ffffff !important;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+    font-weight: 500;
+}
+
+[data-theme="theme2"] .navbar-brand:hover,
+[data-theme="theme2"] .nav-link:hover,
+[data-theme="theme2"] .dropdown-toggle:hover {
+    color: #e8f5e8 !important;
+}
+
+/* Hero section untuk theme 2 */
+[data-theme="theme2"] .hero-section {
+    background: var(--gradient-hero);
+    position: relative;
+    overflow: hidden;
+}
+
+[data-theme="theme2"] .hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M50 150c0-20 16-36 36-36s36 16 36 36-16 36-36 36-36-16-36-36z'/%3E%3Cpath d='M200 100c0-15 12-27 27-27s27 12 27 27-12 27-27 27-27-12-27-27z'/%3E%3Cpath d='M300 180c0-25 20-45 45-45s45 20 45 45-20 45-45 45-45-20-45-45z'/%3E%3C/g%3E%3C/svg%3E") no-repeat center;
+    background-size: contain;
+}
+
+/* ===== TEMA 3: QUALITY CARE (Hijau Premium dengan landscape background) ===== */
+[data-theme="quality_care"] {
+    --primary-color: #27ae60;
+    --secondary-color: #2ecc71;
+    --accent-color: #58d68d;
+    --background-primary: #ffffff;
+    --background-secondary: #f9fdfb;
+    --background-accent: #eaf7f0;
+    --text-primary: #1e3a2e;
+    --text-secondary: #2c5f44;
+    --text-light: #ffffff;
+    --gradient-primary: linear-gradient(135deg, #27ae60 0%, #2ecc71 50%, #58d68d 100%);
+    --gradient-hero: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+    --shadow-soft: 0 5px 18px rgba(39, 174, 96, 0.1);
+    --shadow-medium: 0 10px 30px rgba(39, 174, 96, 0.15);
+    --border-radius: 15px;
+    --border-radius-lg: 25px;
+}
+
+/* Hero section dengan landscape background untuk theme 3 */
+[data-theme="quality_care"] .hero-section {
+    background: linear-gradient(rgba(39, 174, 96, 0.85), rgba(34, 153, 84, 0.85)),
+                url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') center/cover;
+    position: relative;
+    min-height: 85vh;
+}
+
+[data-theme="quality_care"] .hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(39, 174, 96, 0.7) 0%, rgba(34, 153, 84, 0.8) 100%);
+    z-index: 1;
+}
+
+[data-theme="quality_care"] .hero-section .container {
+    position: relative;
+    z-index: 2;
+}
+
+/* Enhanced navbar untuk theme 3 */
+[data-theme="quality_care"] .navbar {
+    background: linear-gradient(135deg, rgba(39, 174, 96, 0.95) 0%, rgba(34, 153, 84, 0.95) 100%) !important;
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="quality_care"] .navbar-brand,
+[data-theme="quality_care"] .nav-link {
+    color: #ffffff !important;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    font-weight: 600;
+}
+
+[data-theme="quality_care"] .navbar-brand:hover,
+[data-theme="quality_care"] .nav-link:hover {
+    color: #e8f5e8 !important;
+    transform: translateY(-1px);
+}
+
+/* Floating elements untuk theme 3 */
+[data-theme="quality_care"] .hero-section::after {
+    content: '';
+    position: absolute;
+    top: 20%;
+    right: 10%;
+    width: 200px;
+    height: 200px;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M50 100c0-27.6 22.4-50 50-50s50 22.4 50 50-22.4 50-50 50-50-22.4-50-50z'/%3E%3Cpath d='M100 70c-16.6 0-30 13.4-30 30s13.4 30 30 30 30-13.4 30-30-13.4-30-30-30z'/%3E%3C/g%3E%3C/svg%3E") no-repeat center;
+    background-size: contain;
+    z-index: 1;
+    animation: float 6s ease-in-out infinite;
+}
+
+/* ===== UNIVERSAL THEME APPLICATIONS ===== */
+/* Aplikasi warna universal untuk semua tema */
+
+/* Navigation */
+.navbar {
+    background: var(--gradient-primary) !important;
+    box-shadow: var(--shadow-medium);
+}
+
+/* Buttons */
+.btn-primary {
+    background: var(--gradient-primary);
+    border: none;
+    border-radius: var(--border-radius);
+}
+
+.btn-success {
+    background: var(--gradient-primary);
+    border: none;
+    border-radius: var(--border-radius);
+}
+
+.btn-outline-success {
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    border-radius: var(--border-radius);
+}
+
+.btn-outline-success:hover {
+    background: var(--primary-color);
+    color: var(--text-light);
+}
+
+/* Cards */
+.card {
+    border: none;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-soft);
+    background: var(--background-primary);
+}
+
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-medium);
+}
+
+/* Headers and Text */
+.bg-primary, .bg-success {
+    background: var(--gradient-primary) !important;
+    color: var(--text-light) !important;
+}
+
+.text-success {
+    color: var(--primary-color) !important;
+}
+
+/* Forms */
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(var(--primary-color), 0.25);
+}
+
+/* Footer */
+footer {
+    background: var(--gradient-hero);
+    color: var(--text-light);
+}
+
+/* Hero Section Universal */
+.hero-section {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    color: var(--text-light);
+}
+
+.hero-section h1, .hero-section p, .hero-section * {
+    color: var(--text-light) !important;
+}
+
+/* Custom Theme Mode */
+[data-theme="custom"] {
+    --primary-color: var(--custom-primary);
+    --secondary-color: var(--custom-secondary);
+    --accent-color: var(--custom-accent);
+    --gradient-primary: linear-gradient(135deg, var(--custom-primary) 0%, var(--custom-secondary) 50%, var(--custom-accent) 100%);
+    --gradient-hero: linear-gradient(135deg, var(--custom-primary) 0%, var(--custom-secondary) 100%);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    [data-theme] .hero-section::before,
+    [data-theme] .hero-section::after {
+        display: none;
+    }
+}
