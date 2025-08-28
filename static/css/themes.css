@@ -1,0 +1,427 @@
+/* ===== TEMA SYSTEM CSS ===== */
+/* Berisi 3 tema utama berdasarkan gambar yang diberikan */
+
+/* ===== TEMA 1: NATURE LIFE (Hijau Natural dengan ilustrasi) ===== */
+[data-theme="nature_life"] {
+    --primary-color: #2d5a3d;
+    --secondary-color: #4a7c59;
+    --accent-color: #7fb069;
+    --background-primary: #ffffff;
+    --background-secondary: #f8fdf9;
+    --background-accent: #e8f5e8;
+    --text-primary: #2c3e2d;
+    --text-secondary: #5a6c5b;
+    --text-light: #ffffff;
+    --gradient-primary: linear-gradient(135deg, #2d5a3d 0%, #4a7c59 50%, #7fb069 100%);
+    --gradient-hero: linear-gradient(135deg, #2d5a3d 0%, #1e4029 100%);
+    --shadow-soft: 0 4px 15px rgba(45, 90, 61, 0.1);
+    --shadow-medium: 0 8px 25px rgba(45, 90, 61, 0.15);
+    --border-radius: 12px;
+    --border-radius-lg: 20px;
+}
+
+/* Theme 1 - Nature Life - Only use uploaded gallery images */
+[data-theme="nature_life"] .hero-section {
+    /* Remove default background - will be set by JavaScript with uploaded images */
+    background: var(--gradient-primary) !important;
+    min-height: 100vh !important;
+    position: relative;
+}
+
+/* When gallery is loaded, JavaScript will apply the background */
+[data-theme="nature_life"].has-gallery .hero-section {
+    /* JavaScript will set background-image with uploaded gallery images */
+}
+
+[data-theme="nature_life"] .hero-section {
+    background: var(--gradient-hero);
+    position: relative;
+    overflow: hidden;
+}
+
+[data-theme="nature_life"] .hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M50 150c0-20 16-36 36-36s36 16 36 36-16 36-36 36-36-16-36-36z'/%3E%3Cpath d='M200 100c0-15 12-27 27-27s27 12 27 27-12 27-27 27-27-12-27-27z'/%3E%3Cpath d='M300 180c0-25 20-45 45-45s45 20 45 45-20 45-45 45-45-20-45-45z'/%3E%3C/g%3E%3C/svg%3E") no-repeat center;
+    background-size: contain;
+}
+
+/* ===== TEMA 2: GALLERY BACKGROUND (Menggunakan galeri sebagai background navbar) ===== */
+[data-theme="theme2"] {
+    --primary-color: #2c5a3d;
+    --secondary-color: #4a7c59;
+    --accent-color: #7fb069;
+    --background-primary: #ffffff;
+    --background-secondary: #f8fdf9;
+    --background-accent: #e8f5e8;
+    --text-primary: #2c3e2d;
+    --text-secondary: #5a6c5b;
+    --text-light: #ffffff;
+    --gradient-primary: linear-gradient(135deg, #2c5a3d 0%, #4a7c59 50%, #7fb069 100%);
+    --gradient-hero: linear-gradient(135deg, #2c5a3d 0%, #1e4029 100%);
+    --shadow-soft: 0 4px 15px rgba(44, 90, 61, 0.1);
+    --shadow-medium: 0 8px 25px rgba(44, 90, 61, 0.15);
+    --border-radius: 12px;
+    --border-radius-lg: 20px;
+}
+
+/* Theme 2 - Only use uploaded gallery images */
+[data-theme="theme2"] .hero-section {
+    /* Remove default background - will be set by JavaScript with uploaded images */
+    background: var(--gradient-secondary) !important;
+    min-height: 100vh !important;
+    position: relative;
+}
+
+/* When gallery is loaded, JavaScript will apply the background */
+[data-theme="theme2"].has-gallery .hero-section {
+    /* JavaScript will set background-image with uploaded gallery images */
+}
+
+/* Theme 2 specific - also use gallery in navbar background */
+[data-theme="theme2"].has-gallery .navbar {
+    background: linear-gradient(rgba(52, 152, 219, 0.95), rgba(41, 128, 185, 0.95)), 
+                var(--gallery-bg-image) !important;
+    background-size: cover !important;
+    background-position: center !important;
+}
+
+/* Special navbar background untuk theme 2 */
+[data-theme="theme2"] .navbar {
+    background: linear-gradient(rgba(44, 90, 61, 0.9), rgba(44, 90, 61, 0.9)), 
+                var(--gallery-background, var(--gradient-primary)) !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    backdrop-filter: blur(5px);
+}
+
+[data-theme="theme2"] .navbar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(44, 90, 61, 0.85);
+    z-index: -1;
+}
+
+[data-theme="theme2"] .navbar * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Enhanced text visibility for navbar on both themes */
+[data-theme="nature_life"] .navbar-brand,
+[data-theme="nature_life"] .nav-link,
+[data-theme="nature_life"] .dropdown-toggle,
+[data-theme="theme2"] .navbar-brand,
+[data-theme="theme2"] .nav-link,
+[data-theme="theme2"] .dropdown-toggle {
+    color: #ffffff !important;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.9);
+    font-weight: 700;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 10;
+}
+
+/* Navbar hover effect for better visibility */
+[data-theme="nature_life"] .navbar:hover,
+[data-theme="theme2"] .navbar:hover {
+    background: rgba(45, 90, 61, 0.95) !important;
+    backdrop-filter: blur(25px) !important;
+}
+
+/* Ensure navbar container has no margin/padding issues */
+[data-theme="nature_life"] .navbar .container,
+[data-theme="theme2"] .navbar .container {
+    margin: 0 auto !important;
+    padding: 0 1rem !important;
+}
+
+[data-theme="nature_life"] .navbar-brand:hover,
+[data-theme="nature_life"] .nav-link:hover,
+[data-theme="nature_life"] .dropdown-toggle:hover,
+[data-theme="theme2"] .navbar-brand:hover,
+[data-theme="theme2"] .nav-link:hover,
+[data-theme="theme2"] .dropdown-toggle:hover {
+    color: #e8f5e8 !important;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.9);
+}
+
+/* Make navbar toggler more visible on transparent background */
+[data-theme="nature_life"] .navbar-toggler,
+[data-theme="theme2"] .navbar-toggler {
+    border: 2px solid rgba(255, 255, 255, 0.8) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+[data-theme="nature_life"] .navbar-toggler-icon,
+[data-theme="theme2"] .navbar-toggler-icon {
+    filter: brightness(0) invert(1) drop-shadow(1px 1px 2px rgba(0,0,0,0.8));
+}
+
+/* Hero section untuk theme 2 */
+[data-theme="theme2"] .hero-section {
+    background: var(--gradient-hero);
+    position: relative;
+    overflow: hidden;
+}
+
+[data-theme="theme2"] .hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M50 150c0-20 16-36 36-36s36 16 36 36-16 36-36 36-36-16-36-36z'/%3E%3Cpath d='M200 100c0-15 12-27 27-27s27 12 27 27-12 27-27 27-27-12-27-27z'/%3E%3Cpath d='M300 180c0-25 20-45 45-45s45 20 45 45-20 45-45 45-45-20-45-45z'/%3E%3C/g%3E%3C/svg%3E") no-repeat center;
+    background-size: contain;
+}
+
+/* ===== TEMA 3: QUALITY CARE (Hijau Premium dengan landscape background) ===== */
+[data-theme="quality_care"] {
+    --primary-color: #27ae60;
+    --secondary-color: #2ecc71;
+    --accent-color: #58d68d;
+    --background-primary: #ffffff;
+    --background-secondary: #f9fdfb;
+    --background-accent: #eaf7f0;
+    --text-primary: #1e3a2e;
+    --text-secondary: #2c5f44;
+    --text-light: #ffffff;
+    --gradient-primary: linear-gradient(135deg, #27ae60 0%, #2ecc71 50%, #58d68d 100%);
+    --gradient-hero: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+    --shadow-soft: 0 5px 18px rgba(39, 174, 96, 0.1);
+    --shadow-medium: 0 10px 30px rgba(39, 174, 96, 0.15);
+    --border-radius: 15px;
+    --border-radius-lg: 25px;
+}
+
+/* Hero section dengan landscape background untuk theme 3 */
+[data-theme="quality_care"] .hero-section {
+    background: linear-gradient(rgba(39, 174, 96, 0.85), rgba(34, 153, 84, 0.85)),
+                url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') center/cover;
+    position: relative;
+    min-height: 85vh;
+}
+
+[data-theme="quality_care"] .hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(39, 174, 96, 0.7) 0%, rgba(34, 153, 84, 0.8) 100%);
+    z-index: 1;
+}
+
+[data-theme="quality_care"] .hero-section .container {
+    position: relative;
+    z-index: 2;
+}
+
+/* Enhanced navbar untuk theme 3 */
+[data-theme="quality_care"] .navbar {
+    background: linear-gradient(135deg, rgba(39, 174, 96, 0.95) 0%, rgba(34, 153, 84, 0.95) 100%) !important;
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="quality_care"] .navbar-brand,
+[data-theme="quality_care"] .nav-link {
+    color: #ffffff !important;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    font-weight: 600;
+}
+
+[data-theme="quality_care"] .navbar-brand:hover,
+[data-theme="quality_care"] .nav-link:hover {
+    color: #e8f5e8 !important;
+    transform: translateY(-1px);
+}
+
+/* Floating elements untuk theme 3 */
+[data-theme="quality_care"] .hero-section::after {
+    content: '';
+    position: absolute;
+    top: 20%;
+    right: 10%;
+    width: 200px;
+    height: 200px;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M50 100c0-27.6 22.4-50 50-50s50 22.4 50 50-22.4 50-50 50-50-22.4-50-50z'/%3E%3Cpath d='M100 70c-16.6 0-30 13.4-30 30s13.4 30 30 30 30-13.4 30-30-13.4-30-30-30z'/%3E%3C/g%3E%3C/svg%3E") no-repeat center;
+    background-size: contain;
+    z-index: 1;
+    animation: float 6s ease-in-out infinite;
+}
+
+/* ===== UNIVERSAL THEME APPLICATIONS ===== */
+/* Aplikasi warna universal untuk semua tema */
+
+/* Navigation */
+.navbar {
+    background: var(--gradient-primary) !important;
+    box-shadow: var(--shadow-medium);
+}
+
+/* Fix navbar positioning and z-index layering for themes 1 and 2 */
+[data-theme="nature_life"] .navbar,
+[data-theme="theme2"] .navbar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    z-index: 9999 !important;
+    background: rgba(45, 90, 61, 0.85) !important;
+    backdrop-filter: blur(20px) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
+    transition: all 0.3s ease !important;
+    margin: 0 !important;
+    padding: 0.75rem 0 !important;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Remove body padding and margin for seamless design */
+[data-theme="nature_life"] body,
+[data-theme="theme2"] body {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+
+/* Remove any default margin/padding from html and body */
+[data-theme="nature_life"] html,
+[data-theme="theme2"] html {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Make hero section start from top with proper z-index */
+[data-theme="nature_life"] .hero-section,
+[data-theme="theme2"] .hero-section {
+    margin-top: 0 !important;
+    padding-top: 80px !important;
+    min-height: 100vh !important;
+    position: relative !important;
+    z-index: 1 !important;
+    top: 0 !important;
+}
+
+/* Remove any default spacing from main container */
+[data-theme="nature_life"] main,
+[data-theme="theme2"] main {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Ensure carousel and background images stay behind navbar */
+[data-theme="nature_life"] .carousel,
+[data-theme="theme2"] .carousel,
+[data-theme="nature_life"] .carousel-inner,
+[data-theme="theme2"] .carousel-inner,
+[data-theme="nature_life"] .carousel-item,
+[data-theme="theme2"] .carousel-item {
+    z-index: 0 !important;
+}
+
+/* Hero content should be above background but below navbar */
+[data-theme="nature_life"] .hero-section .container,
+[data-theme="theme2"] .hero-section .container {
+    position: relative !important;
+    z-index: 2 !important;
+}
+
+/* Buttons */
+.btn-primary {
+    background: var(--gradient-primary);
+    border: none;
+    border-radius: var(--border-radius);
+}
+
+.btn-success {
+    background: var(--gradient-primary);
+    border: none;
+    border-radius: var(--border-radius);
+}
+
+.btn-outline-success {
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    border-radius: var(--border-radius);
+}
+
+.btn-outline-success:hover {
+    background: var(--primary-color);
+    color: var(--text-light);
+}
+
+/* Cards */
+.card {
+    border: none;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-soft);
+    background: var(--background-primary);
+}
+
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-medium);
+}
+
+/* Headers and Text */
+.bg-primary, .bg-success {
+    background: var(--gradient-primary) !important;
+    color: var(--text-light) !important;
+}
+
+.text-success {
+    color: var(--primary-color) !important;
+}
+
+/* Forms */
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(var(--primary-color), 0.25);
+}
+
+/* Footer */
+footer {
+    background: var(--gradient-hero);
+    color: var(--text-light);
+}
+
+/* Hero Section Universal */
+.hero-section {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    color: var(--text-light);
+}
+
+.hero-section h1, .hero-section p, .hero-section * {
+    color: var(--text-light) !important;
+}
+
+/* Custom Theme Mode */
+[data-theme="custom"] {
+    --primary-color: var(--custom-primary);
+    --secondary-color: var(--custom-secondary);
+    --accent-color: var(--custom-accent);
+    --gradient-primary: linear-gradient(135deg, var(--custom-primary) 0%, var(--custom-secondary) 50%, var(--custom-accent) 100%);
+    --gradient-hero: linear-gradient(135deg, var(--custom-primary) 0%, var(--custom-secondary) 100%);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    [data-theme] .hero-section::before,
+    [data-theme] .hero-section::after {
+        display: none;
+    }
+}
