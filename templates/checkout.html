@@ -1,0 +1,226 @@
+{% extends "base.html" %}
+
+{% block title %}{{ 'Checkout' if lang == 'en' else 'Checkout' }}{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="display-5 fw-bold mb-4">
+                    <i class="fas fa-credit-card me-3"></i>
+                    {{ 'Checkout' if lang == 'en' else 'Checkout' }}
+                </h1>
+            </div>
+        </div>
+
+        <form method="POST" action="{{ url_for('place_order') }}">
+            <div class="row g-5">
+                <!-- Customer Information -->
+                <div class="col-lg-8">
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-user me-2"></i>
+                                {{ 'Customer Information' if lang == 'en' else 'Informasi Pelanggan' }}
+                            </h5>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="customer_name" class="form-label">
+                                        {{ 'Full Name' if lang == 'en' else 'Nama Lengkap' }} <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" class="form-control" id="customer_name" name="customer_name" value="{{ session.customer_name or '' }}" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="customer_email" class="form-label">
+                                        {{ 'Email Address' if lang == 'en' else 'Alamat Email' }} <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="email" class="form-control" id="customer_email" name="customer_email" value="{{ session.customer_email or '' }}" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="customer_phone" class="form-label">
+                                        {{ 'Phone Number' if lang == 'en' else 'Nomor Telepon' }}
+                                    </label>
+                                    <input type="tel" class="form-control" id="customer_phone" name="customer_phone">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="customer_company" class="form-label">
+                                        {{ 'Company Name' if lang == 'en' else 'Nama Perusahaan' }}
+                                    </label>
+                                    <input type="text" class="form-control" id="customer_company" name="customer_company">
+                                </div>
+                                <div class="col-12">
+                                    <label for="customer_country" class="form-label">
+                                        {{ 'Country' if lang == 'en' else 'Negara' }} <span class="text-danger">*</span>
+                                    </label>
+                                    <select class="form-select" id="customer_country" name="customer_country" required>
+                                        <option value="">{{ 'Select your country' if lang == 'en' else 'Pilih negara Anda' }}</option>
+                                        <option value="United States">United States</option>
+                                        <option value="United Kingdom">United Kingdom</option>
+                                        <option value="Germany">Germany</option>
+                                        <option value="France">France</option>
+                                        <option value="Japan">Japan</option>
+                                        <option value="South Korea">South Korea</option>
+                                        <option value="Singapore">Singapore</option>
+                                        <option value="Malaysia">Malaysia</option>
+                                        <option value="Thailand">Thailand</option>
+                                        <option value="Australia">Australia</option>
+                                        <option value="Canada">Canada</option>
+                                        <option value="Netherlands">Netherlands</option>
+                                        <option value="Other">{{ 'Other' if lang == 'en' else 'Lainnya' }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Shipping Information -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-shipping-fast me-2"></i>
+                                {{ 'Shipping Information' if lang == 'en' else 'Informasi Pengiriman' }}
+                            </h5>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="mb-3">
+                                <label for="shipping_address" class="form-label">
+                                    {{ 'Complete Shipping Address' if lang == 'en' else 'Alamat Pengiriman Lengkap' }} <span class="text-danger">*</span>
+                                </label>
+                                <textarea class="form-control" id="shipping_address" name="shipping_address" rows="4" required
+                                          placeholder="{{ 'Include street address, city, state/province, postal code' if lang == 'en' else 'Sertakan alamat jalan, kota, negara bagian/provinsi, kode pos' }}"></textarea>
+                            </div>
+                            
+                            <div class="alert alert-info">
+                                <h6 class="alert-heading">
+                                    <i class="fas fa-globe me-2"></i>
+                                    {{ 'International Shipping Notice' if lang == 'en' else 'Pemberitahuan Pengiriman Internasional' }}
+                                </h6>
+                                <ul class="mb-0">
+                                    <li>{{ 'Shipping costs will be calculated based on destination and order size' if lang == 'en' else 'Biaya pengiriman akan dihitung berdasarkan tujuan dan ukuran pesanan' }}</li>
+                                    <li>{{ 'Export documentation will be handled by our team' if lang == 'en' else 'Dokumentasi ekspor akan ditangani oleh tim kami' }}</li>
+                                    <li>{{ 'Delivery time: 7-14 business days depending on destination' if lang == 'en' else 'Waktu pengiriman: 7-14 hari kerja tergantung tujuan' }}</li>
+                                    <li>{{ 'Import duties and taxes may apply at destination' if lang == 'en' else 'Bea masuk dan pajak mungkin berlaku di tujuan' }}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Additional Notes -->
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">
+                                <i class="fas fa-sticky-note me-2"></i>
+                                {{ 'Additional Notes' if lang == 'en' else 'Catatan Tambahan' }}
+                            </h5>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="mb-3">
+                                <label for="notes" class="form-label">
+                                    {{ 'Special Instructions or Requirements' if lang == 'en' else 'Instruksi Khusus atau Persyaratan' }}
+                                </label>
+                                <textarea class="form-control" id="notes" name="notes" rows="3"
+                                          placeholder="{{ 'Any special packaging, delivery instructions, or quality requirements...' if lang == 'en' else 'Kemasan khusus, instruksi pengiriman, atau persyaratan kualitas...' }}"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Summary -->
+                <div class="col-lg-4">
+                    <div class="card border-0 shadow-sm position-sticky" style="top: 2rem;">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-clipboard-list me-2"></i>
+                                {{ 'Order Summary' if lang == 'en' else 'Ringkasan Pesanan' }}
+                            </h5>
+                        </div>
+                        <div class="card-body p-4">
+                            <!-- Order Items -->
+                            {% for item in cart_items %}
+                            <div class="d-flex align-items-center mb-3 pb-3 border-bottom">
+                                <div class="me-3">
+                                    {% if item.product.image_url %}
+                                    <img src="{{ item.product.image_url }}" alt="{{ item.product.name_en if lang == 'en' else item.product.name_id }}" 
+                                         class="rounded" style="width: 50px; height: 50px; object-fit: cover;">
+                                    {% else %}
+                                    <div class="bg-success bg-opacity-10 rounded d-flex align-items-center justify-content-center" 
+                                         style="width: 50px; height: 50px;">
+                                        <i class="fas fa-leaf text-success"></i>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1">{{ item.product.name_en if lang == 'en' else item.product.name_id }}</h6>
+                                    <small class="text-muted">{{ item.quantity }} {{ item.product.unit }} × {{ format_currency(get_product_price(item.product, currency), currency, lang) }}</small>
+                                    <div class="fw-bold text-success">{{ format_currency(item.total, currency, lang) }}</div>
+                                </div>
+                            </div>
+                            {% endfor %}
+
+                            <!-- Totals -->
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>{{ 'Subtotal' if lang == 'en' else 'Subtotal' }}</span>
+                                <span class="fw-bold">{{ format_currency(total, currency, lang) }}</span>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between mb-3">
+                                <span>{{ 'Shipping' if lang == 'en' else 'Pengiriman' }}</span>
+                                <span class="text-muted">{{ 'To be calculated' if lang == 'en' else 'Akan dihitung' }}</span>
+                            </div>
+                            
+                            <hr>
+                            
+                            <div class="d-flex justify-content-between mb-4">
+                                <span class="h5 fw-bold">{{ 'Total' if lang == 'en' else 'Total' }}</span>
+                                <span class="h5 fw-bold text-success">{{ format_currency(total, currency, lang) }}</span>
+                            </div>
+                            
+                            <!-- Place Order Button -->
+                            <div class="d-grid mb-3">
+                                <button type="submit" class="btn btn-success btn-lg">
+                                    <i class="fas fa-check me-2"></i>
+                                    {{ 'Place Order' if lang == 'en' else 'Buat Pesanan' }}
+                                </button>
+                            </div>
+                            
+                            <div class="text-center">
+                                <small class="text-muted">
+                                    {{ 'By placing this order, you agree to our terms and conditions' if lang == 'en' else 'Dengan membuat pesanan ini, Anda setuju dengan syarat dan ketentuan kami' }}
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Form validation
+document.querySelector('form').addEventListener('submit', function(e) {
+    const requiredFields = ['customer_name', 'customer_email', 'customer_country', 'shipping_address'];
+    let isValid = true;
+    
+    requiredFields.forEach(fieldName => {
+        const field = document.getElementById(fieldName);
+        if (!field.value.trim()) {
+            field.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            field.classList.remove('is-invalid');
+        }
+    });
+    
+    if (!isValid) {
+        e.preventDefault();
+        alert('{{ "Please fill in all required fields" if lang == "en" else "Harap isi semua bidang yang diperlukan" }}');
+    }
+});
+</script>
+{% endblock %}
