@@ -1,0 +1,548 @@
+{% extends "base.html" %}
+
+{% block title %}Admin - Settings{% endblock %}
+
+{% block content %}
+<div class="container my-5 admin-settings-container">
+    <!-- Page Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="display-5 fw-bold">
+                <i class="fas fa-cog me-3"></i>
+                Company Settings
+            </h1>
+            <p class="lead text-muted">Manage your company information and website settings</p>
+        </div>
+    </div>
+
+    <form method="POST">
+        <div class="row g-4">
+            <!-- Company Information -->
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-building me-2"></i>
+                            Company Information
+                        </h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="company_name_en" class="form-label">Company Name (English) *</label>
+                                <input type="text" class="form-control" id="company_name_en" name="company_name_en" 
+                                       value="{{ settings.company_name_en }}" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="company_name_id" class="form-label">Company Name (Indonesian) *</label>
+                                <input type="text" class="form-control" id="company_name_id" name="company_name_id" 
+                                       value="{{ settings.company_name_id }}" required>
+                            </div>
+                            <div class="col-12">
+                                <label for="company_description_en" class="form-label">Company Description (English)</label>
+                                <textarea class="form-control" id="company_description_en" name="company_description_en" 
+                                          rows="3">{{ settings.company_description_en }}</textarea>
+                            </div>
+                            <div class="col-12">
+                                <label for="company_description_id" class="form-label">Company Description (Indonesian)</label>
+                                <textarea class="form-control" id="company_description_id" name="company_description_id" 
+                                          rows="3">{{ settings.company_description_id }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-address-book me-2"></i>
+                            Contact Information
+                        </h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label for="contact_email" class="form-label">Email Address *</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                    <input type="email" class="form-control" id="contact_email" name="contact_email" 
+                                           value="{{ settings.contact_email }}" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="contact_phone" class="form-label">Phone Number</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                    <input type="tel" class="form-control" id="contact_phone" name="contact_phone" 
+                                           value="{{ settings.contact_phone }}">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="contact_whatsapp" class="form-label">WhatsApp Number</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fab fa-whatsapp"></i></span>
+                                    <input type="tel" class="form-control" id="contact_whatsapp" name="contact_whatsapp" 
+                                           value="{{ settings.contact_whatsapp }}" 
+                                           placeholder="+62-812-3456-7890">
+                                </div>
+                                <div class="form-text">Include country code (e.g., +62-812-3456-7890)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Address Information -->
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-warning text-dark">
+                        <h5 class="mb-0">
+                            <i class="fas fa-map-marker-alt me-2"></i>
+                            Address Information
+                        </h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="address_en" class="form-label">Address (English)</label>
+                                <textarea class="form-control" id="address_en" name="address_en" 
+                                          rows="3">{{ settings.address_en }}</textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="address_id" class="form-label">Address (Indonesian)</label>
+                                <textarea class="form-control" id="address_id" name="address_id" 
+                                          rows="3">{{ settings.address_id }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Appearance Settings -->
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-palette me-2"></i>
+                            Appearance Settings
+                        </h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label for="primary_color" class="form-label">Primary Color (Navbar, Buttons)</label>
+                                <div class="input-group">
+                                    <input type="color" class="form-control form-control-color" id="primary_color" name="primary_color" 
+                                           value="{{ settings.primary_color }}" title="Choose primary color">
+                                    <input type="text" class="form-control" id="primary_color_text" 
+                                           value="{{ settings.primary_color }}" readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="secondary_color" class="form-label">Secondary Color (Footer, etc.)</label>
+                                <div class="input-group">
+                                    <input type="color" class="form-control form-control-color" id="secondary_color" name="secondary_color" 
+                                           value="{{ settings.secondary_color }}" title="Choose secondary color">
+                                    <input type="text" class="form-control" id="secondary_color_text" 
+                                           value="{{ settings.secondary_color }}" readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="logo_file" class="form-label">Company Logo</label>
+                                <input type="file" class="form-control" id="logo_file" name="logo_file" 
+                                       accept="image/*">
+                                <div class="form-text">Upload PNG, JPG, GIF, or WEBP (max 5MB)</div>
+                                {% if settings.logo_url %}
+                                <div class="mt-2">
+                                    <img src="{{ settings.logo_url }}" alt="Current Logo" class="img-thumbnail" style="max-height: 60px;">
+                                    <small class="text-muted d-block">Current logo</small>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <!-- Color Preview -->
+                        <div class="row g-3 mt-3">
+                            <div class="col-12">
+                                <div class="alert alert-info">
+                                    <h6 class="alert-heading">
+                                        <i class="fas fa-eye me-2"></i>
+                                        Color Preview
+                                    </h6>
+                                    <div class="row g-2">
+                                        <div class="col-md-6">
+                                            <div class="p-3 rounded" id="primary_preview" style="background-color: {{ settings.primary_color }}; color: white;">
+                                                <strong>Primary Color Example</strong><br>
+                                                <small>This is how your navbar and buttons will look</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="p-3 rounded" id="secondary_preview" style="background-color: {{ settings.secondary_color }}; color: white;">
+                                                <strong>Secondary Color Example</strong><br>
+                                                <small>This is how your footer will look</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Company Gallery -->
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-secondary text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-images me-2"></i>
+                            Company Gallery
+                        </h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label for="gallery_files" class="form-label">Gallery Images</label>
+                                <input type="file" class="form-control" id="gallery_files" name="gallery_files" 
+                                       accept="image/*" multiple>
+                                <div class="form-text">Upload multiple PNG, JPG, GIF, or WEBP images (max 5MB each). These will be displayed in the carousel layout.</div>
+                                
+                                <!-- Current Gallery Images -->
+                                {% if settings.gallery_images %}
+                                <div class="mt-3">
+                                    <h6>Current Gallery Images:</h6>
+                                    <div class="row g-2">
+                                        {% set gallery_list = settings.gallery_images.split(',') if settings.gallery_images else [] %}
+                                        {% for image_url in gallery_list %}
+                                        {% if image_url.strip() %}
+                                        <div class="col-md-3">
+                                            <div class="position-relative">
+                                                <img src="{{ image_url.strip() }}" alt="Gallery Image" class="img-thumbnail" style="height: 120px; width: 100%; object-fit: cover;">
+                                                <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1" onclick="removeGalleryImage('{{ image_url.strip() }}')">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <!-- Gallery Preview -->
+                        <div class="row g-3 mt-3">
+                            <div class="col-12">
+                                <div class="alert alert-info">
+                                    <h6 class="alert-heading">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        Gallery Usage
+                                    </h6>
+                                    <p class="mb-0">Gallery images will be displayed in the "Company Documentation" section when the Carousel Layout is selected. They showcase your company's certifications, facilities, and documentation.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Layout Settings -->
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header" style="background: linear-gradient(45deg, #17a2b8, #6f42c1); color: white;">
+                        <h5 class="mb-0">
+                            <i class="fas fa-layout me-2"></i>
+                            Layout Settings
+                        </h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label">Homepage Layout</label>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="layout_type" id="layout_standard" 
+                                                   value="standard" {{ 'checked' if not settings.layout_type or settings.layout_type == 'standard' }}>
+                                            <label class="form-check-label" for="layout_standard">
+                                                <strong>Standard Layout (Current)</strong>
+                                                <div class="form-text">Clean layout without carousel - current design</div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="layout_type" id="layout_carousel" 
+                                                   value="carousel" {{ 'checked' if settings.layout_type == 'carousel' }}>
+                                            <label class="form-check-label" for="layout_carousel">
+                                                <strong>Carousel Layout</strong>
+                                                <div class="form-text">Interactive layout with product carousel and company documentation</div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Layout Preview -->
+                                <div class="mt-4">
+                                    <div class="alert alert-info">
+                                        <h6 class="alert-heading">
+                                            <i class="fas fa-eye me-2"></i>
+                                            Layout Preview
+                                        </h6>
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <div class="bg-light p-3 rounded text-center">
+                                                    <strong>Standard Layout</strong><br>
+                                                    <small class="text-muted">
+                                                        Hero Section → Features → Categories → Products → Contact
+                                                    </small>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="bg-light p-3 rounded text-center">
+                                                    <strong>Carousel Layout</strong><br>
+                                                    <small class="text-muted">
+                                                        Hero → Product Carousel → Company Docs → Features → Contact
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Website Footer Settings -->
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-dark text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-copyright me-2"></i>
+                            Website Footer & Copyright
+                        </h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label for="copyright_text" class="form-label">Copyright Text</label>
+                                <input type="text" class="form-control" id="copyright_text" name="copyright_text" 
+                                       value="{{ settings.copyright_text }}" 
+                                       placeholder="© 2024 Website by Fajar Julyana. All rights reserved.">
+                                <div class="form-text">This will appear in the website footer</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Copyright Preview -->
+                        <div class="row g-3 mt-3">
+                            <div class="col-12">
+                                <div class="alert alert-light border">
+                                    <h6 class="alert-heading">
+                                        <i class="fas fa-eye me-2"></i>
+                                        Footer Preview
+                                    </h6>
+                                    <div class="bg-dark text-white p-3 rounded text-center">
+                                        <small id="copyright_preview">{{ settings.copyright_text }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preview -->
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">
+                            <i class="fas fa-eye me-2"></i>
+                            Website Preview
+                        </h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="alert alert-info">
+                            <h6 class="alert-heading">
+                                <i class="fas fa-info-circle me-2"></i>
+                                How it appears on your website
+                            </h6>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <strong>English Version:</strong><br>
+                                    <div class="bg-light p-3 rounded mt-2">
+                                        <h6 id="preview_company_en" class="fw-bold">{{ settings.company_name_en }}</h6>
+                                        <p id="preview_description_en" class="mb-2">{{ settings.company_description_en }}</p>
+                                        <small class="text-muted">
+                                            <i class="fas fa-envelope me-1"></i><span id="preview_email_en">{{ settings.contact_email }}</span><br>
+                                            <i class="fas fa-phone me-1"></i><span id="preview_phone_en">{{ settings.contact_phone }}</span><br>
+                                            <i class="fas fa-map-marker-alt me-1"></i><span id="preview_address_en">{{ settings.address_en }}</span>
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <strong>Indonesian Version:</strong><br>
+                                    <div class="bg-light p-3 rounded mt-2">
+                                        <h6 id="preview_company_id" class="fw-bold">{{ settings.company_name_id }}</h6>
+                                        <p id="preview_description_id" class="mb-2">{{ settings.company_description_id }}</p>
+                                        <small class="text-muted">
+                                            <i class="fas fa-envelope me-1"></i><span id="preview_email_id">{{ settings.contact_email }}</span><br>
+                                            <i class="fas fa-phone me-1"></i><span id="preview_phone_id">{{ settings.contact_phone }}</span><br>
+                                            <i class="fas fa-map-marker-alt me-1"></i><span id="preview_address_id">{{ settings.address_id }}</span>
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Save Button -->
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <small class="text-muted">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Changes will be visible on your website immediately after saving.
+                                </small>
+                            </div>
+                            <div>
+                                <a href="{{ url_for('admin.dashboard') }}" class="btn btn-outline-secondary me-2">
+                                    <i class="fas fa-arrow-left me-2"></i>
+                                    Back to Dashboard
+                                </a>
+                                <button type="submit" class="btn btn-success btn-lg">
+                                    <i class="fas fa-save me-2"></i>
+                                    Save Settings
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Live preview updates
+function updatePreview() {
+    // English previews
+    document.getElementById('preview_company_en').textContent = 
+        document.getElementById('company_name_en').value || 'Company Name';
+    document.getElementById('preview_description_en').textContent = 
+        document.getElementById('company_description_en').value || 'Company description...';
+    document.getElementById('preview_email_en').textContent = 
+        document.getElementById('contact_email').value || 'email@example.com';
+    document.getElementById('preview_phone_en').textContent = 
+        document.getElementById('contact_phone').value || 'Phone number';
+    document.getElementById('preview_address_en').textContent = 
+        document.getElementById('address_en').value || 'Company address';
+
+    // Indonesian previews
+    document.getElementById('preview_company_id').textContent = 
+        document.getElementById('company_name_id').value || 'Nama Perusahaan';
+    document.getElementById('preview_description_id').textContent = 
+        document.getElementById('company_description_id').value || 'Deskripsi perusahaan...';
+    document.getElementById('preview_email_id').textContent = 
+        document.getElementById('contact_email').value || 'email@example.com';
+    document.getElementById('preview_phone_id').textContent = 
+        document.getElementById('contact_phone').value || 'Nomor telepon';
+    document.getElementById('preview_address_id').textContent = 
+        document.getElementById('address_id').value || 'Alamat perusahaan';
+}
+
+// Add event listeners to all form inputs
+document.addEventListener('DOMContentLoaded', function() {
+    const inputs = document.querySelectorAll('input, textarea');
+    inputs.forEach(input => {
+        input.addEventListener('input', updatePreview);
+    });
+    
+    // Color picker event listeners
+    const primaryColorPicker = document.getElementById('primary_color');
+    const secondaryColorPicker = document.getElementById('secondary_color');
+    const primaryColorText = document.getElementById('primary_color_text');
+    const secondaryColorText = document.getElementById('secondary_color_text');
+    const primaryPreview = document.getElementById('primary_preview');
+    const secondaryPreview = document.getElementById('secondary_preview');
+    
+    primaryColorPicker.addEventListener('input', function() {
+        primaryColorText.value = this.value;
+        primaryPreview.style.backgroundColor = this.value;
+    });
+    
+    secondaryColorPicker.addEventListener('input', function() {
+        secondaryColorText.value = this.value;
+        secondaryPreview.style.backgroundColor = this.value;
+    });
+    
+    // Copyright preview
+    const copyrightInput = document.getElementById('copyright_text');
+    const copyrightPreview = document.getElementById('copyright_preview');
+    
+    copyrightInput.addEventListener('input', function() {
+        copyrightPreview.textContent = this.value || '© 2024 Website by Fajar Julyana. All rights reserved.';
+    });
+});
+
+// Gallery image removal function
+function removeGalleryImage(imageUrl) {
+    if (confirm('Are you sure you want to remove this gallery image?')) {
+        // Create a hidden form to submit the removal
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '{{ url_for("admin.remove_gallery_image") }}';
+        
+        const csrfToken = document.querySelector('input[name="csrf_token"]');
+        if (csrfToken) {
+            const hiddenCsrf = document.createElement('input');
+            hiddenCsrf.type = 'hidden';
+            hiddenCsrf.name = 'csrf_token';
+            hiddenCsrf.value = csrfToken.value;
+            form.appendChild(hiddenCsrf);
+        }
+        
+        const hiddenImageUrl = document.createElement('input');
+        hiddenImageUrl.type = 'hidden';
+        hiddenImageUrl.name = 'image_url';
+        hiddenImageUrl.value = imageUrl;
+        form.appendChild(hiddenImageUrl);
+        
+        document.body.appendChild(form);
+        form.submit();
+    }
+}
+
+// Form validation
+document.querySelector('form').addEventListener('submit', function(e) {
+    const requiredFields = ['company_name_en', 'company_name_id', 'contact_email'];
+    let isValid = true;
+    
+    requiredFields.forEach(fieldName => {
+        const field = document.getElementById(fieldName);
+        if (!field.value.trim()) {
+            field.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            field.classList.remove('is-invalid');
+        }
+    });
+    
+    if (!isValid) {
+        e.preventDefault();
+        alert('Please fill in all required fields');
+    }
+});
+</script>
+{% endblock %}
